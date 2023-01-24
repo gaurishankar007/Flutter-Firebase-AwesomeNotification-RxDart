@@ -1,0 +1,4 @@
+enum FirebaseOpt {
+  add,
+  update,
+}

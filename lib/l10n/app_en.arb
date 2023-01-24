@@ -1,0 +1,21 @@
+{
+    "flutterInternationalization": "Flutter Internationalization",
+    "productPage": "Product Page",
+    "languageSelection": "Select the language",
+    "english": "Engilsh",
+    "nepali": "Nepali",
+    "spanish": "Spanish",
+    "hindi": "Hindi",
+    "deliveryHint": "Delivery in 2-5 Business Days",
+    "priceHint": "Price Inclusive of all taxes",
+    "review": "Reviews",
+    "additionalInfo": "Additional Information",
+    "description": "Description",
+    "post": "Post",
+    "name": "Name",
+    "nameHint": "Enter your name",
+    "email": "Email",
+    "emailHint": "Enter your email",
+    "experience": "Experience",
+    "experienceHint": "Share your experience"
+  }

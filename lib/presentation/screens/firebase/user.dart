@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield_new.dart';
 import 'package:flutter/services.dart';
@@ -7,13 +5,9 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/constant.dart';
-import '../../data/remote/models/user_model.dart';
-
-enum FirebaseOpt {
-  add,
-  update,
-}
+import '../../../core/constant.dart';
+import '../../../core/firebase_operation_type.dart';
+import '../../../data/remote/models/user_model.dart';
 
 class AllUsers extends StatefulWidget {
   const AllUsers({super.key});
@@ -50,7 +44,6 @@ class _AllUsersState extends State<AllUsers> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     Color primary = Theme.of(context).colorScheme.primary;
     Color secondary = Theme.of(context).colorScheme.secondary;
     Color surface = Theme.of(context).colorScheme.surface;
@@ -99,7 +92,7 @@ class _AllUsersState extends State<AllUsers> {
 
               return ListView.builder(
                 padding: EdgeInsets.symmetric(
-                  horizontal: width * .04,
+                  horizontal: sWidth(context) * .04,
                   vertical: 10,
                 ),
                 itemCount: streamSnapshot.data!.docs.length,
