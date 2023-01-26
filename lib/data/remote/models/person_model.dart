@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class Person {
   final String firstName;
   final String lastName;
   final String email;
   final int phone;
   final DateTime birthday;
 
-  const User({
+  const Person({
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -15,7 +15,7 @@ class User {
     required this.birthday,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory Person.fromJson(Map<String, dynamic> json) => Person(
         firstName: json["firstName"] as String,
         lastName: json["lastName"] as String,
         email: json["email"] as String,

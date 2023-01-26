@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crud/config/routes/routes.dart';
 import 'package:firebase_crud/config/themes/theme.dart';
-import 'package:firebase_crud/presentation/cubits/language/language_bloc.dart';
+import 'package:firebase_crud/data/remote/repositories/firebase_auth_repo.dart';
+import 'package:firebase_crud/presentation/screens/auth/login_register.dart';
+import 'package:firebase_crud/presentation/screens/home.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,22 +18,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LanguageCubit(),
-      child: BlocBuilder<LanguageCubit, LanguageState>(
-        builder: (context, state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Firebase & Internationalization',
-            theme: lightTheme,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            locale: state.locale,
-            initialRoute: "/home",
-            onGenerateRoute: AppRoute.onGenerated,
-          );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Firebase Crud Operation',
+      theme: lightTheme,
+      home: StreamBuilder(
+        stream: AuthFirebase().authStateChanges,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Home();
+          } else {
+            return LoginRegister();
+          }
         },
       ),
+      onGenerateRoute: AppRoute.onGenerated,
     );
   }
 }
