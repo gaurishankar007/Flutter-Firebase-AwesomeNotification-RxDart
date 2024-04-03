@@ -1,4 +1,0 @@
-enum FirebaseOpt {
-  add,
-  update,
-}
