@@ -10,7 +10,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
         stream: AuthFirebase().authStateChanges,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Home();
+            return const Home();
           } else {
-            return LoginRegister();
+            return const LoginRegister();
           }
         },
       ),

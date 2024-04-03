@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
               appBar: AppBar(
                 title: Text(
                   state.userEmail,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                   ),
                 ),
@@ -65,13 +65,13 @@ class _HomeState extends State<Home> {
                         ),
                       );
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.person_add_alt_rounded,
                     ),
                   ),
                   IconButton(
                     onPressed: () => AuthFirebase().signOut(),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.logout_rounded,
                     ),
                   ),
@@ -79,16 +79,15 @@ class _HomeState extends State<Home> {
               ),
               body: StreamBuilder(
                   stream: state.personStream,
-                  builder: (context,
-                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                          streamSnapshot) {
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> streamSnapshot) {
                     if (streamSnapshot.hasData) {
                       List<Person> personList = streamSnapshot.data!.docs
                           .map((doc) => Person.fromJson(doc.data()))
                           .toList();
 
                       if (personList.isEmpty) {
-                        return Center(
+                        return const Center(
                           child: Text("No Users"),
                         );
                       }
@@ -109,31 +108,26 @@ class _HomeState extends State<Home> {
                                 context: context,
                                 backgroundColor: Colors.transparent,
                                 builder: (builder) => Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 20,
                                     vertical: 10,
                                   ),
                                   decoration: BoxDecoration(
                                     color: surface,
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
                                     ),
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       ElevatedButton(
                                         onPressed: () {
-                                          firstName.text =
-                                              personList[index].firstName;
-                                          lastName.text =
-                                              personList[index].lastName;
+                                          firstName.text = personList[index].firstName;
+                                          lastName.text = personList[index].lastName;
                                           email.text = personList[index].email;
-                                          phone.text = personList[index]
-                                              .phone
-                                              .toString();
+                                          phone.text = personList[index].phone.toString();
                                           birthday = personList[index].birthday;
 
                                           Navigator.pop(context);
@@ -146,34 +140,30 @@ class _HomeState extends State<Home> {
                                               context: blocContext,
                                               firebaseOpt: FirebaseOpt.update,
                                               formKey: state.formKey,
-                                              personId: streamSnapshot
-                                                  .data!.docs[index].id,
+                                              personId: streamSnapshot.data!.docs[index].id,
                                             ),
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: secondary,
                                         ),
-                                        child: Text("Edit"),
+                                        child: const Text("Edit"),
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
                                           Navigator.pop(context);
 
-                                          BlocProvider.of<HomeBloc>(context)
-                                              .add(DeletePersonEvent(
-                                                  personId: streamSnapshot
-                                                      .data!.docs[index].id));
+                                          BlocProvider.of<HomeBloc>(context).add(DeletePersonEvent(
+                                              personId: streamSnapshot.data!.docs[index].id));
 
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
+                                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                             content: Text("Person is deleted."),
                                           ));
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.red,
                                         ),
-                                        child: Text("Delete"),
+                                        child: const Text("Delete"),
                                       ),
                                     ],
                                   ),
@@ -188,10 +178,8 @@ class _HomeState extends State<Home> {
                                 "${personList[index].firstName} ${personList[index].lastName}"),
                             subtitle: Text(
                                 "${personList[index].email}, ${personList[index].phone.toString()}"),
-                            trailing: Text(personList[index]
-                                .birthday
-                                .toIso8601String()
-                                .split("T")[0]),
+                            trailing:
+                                Text(personList[index].birthday.toIso8601String().split("T")[0]),
                           );
                         },
                       );
@@ -227,13 +215,13 @@ class _HomeState extends State<Home> {
     Color onSurface = Theme.of(context).colorScheme.onSurface;
 
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 10,
       ),
       decoration: BoxDecoration(
         color: surface,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
         ),
@@ -245,15 +233,13 @@ class _HomeState extends State<Home> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                firebaseOpt == FirebaseOpt.add
-                    ? "Add New Users"
-                    : "Update Person Details",
-                style: TextStyle(
+                firebaseOpt == FirebaseOpt.add ? "Add New Users" : "Update Person Details",
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -263,17 +249,16 @@ class _HomeState extends State<Home> {
                       controller: firstName,
                       validator: MultiValidator([
                         RequiredValidator(errorText: "First name is required."),
-                        LengthRangeValidator(
-                            min: 2, max: 25, errorText: "Invalid Name."),
+                        LengthRangeValidator(min: 2, max: 25, errorText: "Invalid Name."),
                       ]),
                       textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'First Name',
                         hintText: 'Enter your first name',
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Flexible(
@@ -281,11 +266,10 @@ class _HomeState extends State<Home> {
                       controller: lastName,
                       validator: MultiValidator([
                         RequiredValidator(errorText: "Last name is required."),
-                        LengthRangeValidator(
-                            min: 2, max: 25, errorText: "Invalid Name."),
+                        LengthRangeValidator(min: 2, max: 25, errorText: "Invalid Name."),
                       ]),
                       textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Last Name',
                         hintText: 'Enter your last name',
                       ),
@@ -293,7 +277,7 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -302,20 +286,18 @@ class _HomeState extends State<Home> {
                     child: TextFormField(
                       controller: phone,
                       validator: MultiValidator([
-                        RequiredValidator(
-                            errorText: "Phone number is required."),
-                        MinLengthValidator(10,
-                            errorText: "Phone number must be 10 digits."),
+                        RequiredValidator(errorText: "Phone number is required."),
+                        MinLengthValidator(10, errorText: "Phone number must be 10 digits."),
                       ]),
                       inputFormatters: [LengthLimitingTextInputFormatter(10)],
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Phone',
                         hintText: 'Enter your phone',
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Flexible(
@@ -340,14 +322,14 @@ class _HomeState extends State<Home> {
                           initialDate: currentValue ?? DateTime.now(),
                         );
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         label: Text("Birthday"),
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -357,12 +339,12 @@ class _HomeState extends State<Home> {
                   EmailValidator(errorText: "Invalid email."),
                 ]),
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   hintText: 'Enter your email',
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               GestureDetector(
@@ -378,7 +360,7 @@ class _HomeState extends State<Home> {
                         birthday: birthday!,
                       )));
 
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("A new person is added."),
                       ));
                     } else if (firebaseOpt == FirebaseOpt.update) {
@@ -393,7 +375,7 @@ class _HomeState extends State<Home> {
                         personId: personId,
                       ));
 
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Person is updated."),
                       ));
                     }
@@ -403,7 +385,7 @@ class _HomeState extends State<Home> {
                 },
                 child: Container(
                   width: double.maxFinite,
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: primary,
@@ -411,7 +393,7 @@ class _HomeState extends State<Home> {
                     boxShadow: [
                       BoxShadow(
                         color: onSurface.withOpacity(.05),
-                        offset: Offset(2, 2),
+                        offset: const Offset(2, 2),
                         spreadRadius: 1,
                         blurRadius: 2,
                       ),

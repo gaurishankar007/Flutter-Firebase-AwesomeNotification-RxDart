@@ -17,8 +17,7 @@ class _LoginRegisterState extends State<LoginRegister> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordResetController =
-      TextEditingController();
+  final TextEditingController _passwordResetController = TextEditingController();
   bool _obscureText = true;
 
   signIn() async {
@@ -58,7 +57,7 @@ class _LoginRegisterState extends State<LoginRegister> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Firebase Authentication"),
+        title: const Text("Firebase Authentication"),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -84,7 +83,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                 hintText: 'Enter your email',
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TextFormField(
@@ -119,13 +118,13 @@ class _LoginRegisterState extends State<LoginRegister> {
                     backgroundColor: Colors.transparent,
                     isScrollControlled: true,
                     builder: (builder) => Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 10,
                       ),
                       decoration: BoxDecoration(
                         color: surface,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10),
                         ),
@@ -133,7 +132,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Form(
@@ -142,8 +141,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                               controller: _passwordResetController,
                               keyboardType: TextInputType.emailAddress,
                               validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText: "Email is required."),
+                                RequiredValidator(errorText: "Email is required."),
                                 EmailValidator(errorText: "Invalid email."),
                               ]),
                               decoration: InputDecoration(
@@ -157,23 +155,22 @@ class _LoginRegisterState extends State<LoginRegister> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          Align(
+                          const Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                                "An password reset link will be sent to this email."),
+                            child: Text("An password reset link will be sent to this email."),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           ElevatedButton(
                             onPressed: () async {
                               if (formKey.currentState!.validate()) {
                                 try {
-                                  await AuthFirebase().resetPassword(
-                                      email: _passwordResetController.text);
+                                  await AuthFirebase()
+                                      .resetPassword(email: _passwordResetController.text);
 
                                   Navigator.pop(context);
                                 } on FirebaseAuthException catch (error) {
@@ -185,18 +182,17 @@ class _LoginRegisterState extends State<LoginRegister> {
                                 }
                               }
                             },
-                            child: Text("Send Reset Link"),
+                            child: const Text("Send Reset Link"),
                           ),
                           SizedBox(
-                            height:
-                                10 + MediaQuery.of(context).viewInsets.bottom,
+                            height: 10 + MediaQuery.of(context).viewInsets.bottom,
                           ),
                         ],
                       ),
                     ),
                   );
                 },
-                child: Text("Forgot Password?"),
+                child: const Text("Forgot Password?"),
               ),
             ),
             ElevatedButton(
@@ -209,9 +205,8 @@ class _LoginRegisterState extends State<LoginRegister> {
                   isLogin = !isLogin;
                 });
               },
-              child: Text(isLogin
-                  ? "Don't have an account, register?"
-                  : "Already have an account, login?"),
+              child: Text(
+                  isLogin ? "Don't have an account, register?" : "Already have an account, login?"),
             ),
           ],
         ),
