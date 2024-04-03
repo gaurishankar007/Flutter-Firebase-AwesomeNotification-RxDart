@@ -1,6 +1,5 @@
-
-import 'package:firebase_crud/config/themes/theme.dart';
 import 'package:flutter/material.dart';
+import '../config/themes/theme.dart';
 
 const double iconSize = 25;
 

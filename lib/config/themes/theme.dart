@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/constant.dart';
 
-ColorScheme colorScheme = ColorScheme(
+ColorScheme colorScheme = const ColorScheme(
   brightness: Brightness.light,
   primary: Colors.deepPurpleAccent,
   primaryContainer: Colors.deepPurple,
@@ -78,7 +78,7 @@ ThemeData lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 12,
         vertical: 10,
       ),

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield_new.dart';
-import 'package:firebase_crud/data/remote/repositories/firebase_auth_repo.dart';
-import 'package:firebase_crud/presentation/blocs/home/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../data/remote/repositories/firebase_auth_repo.dart';
+import '../blocs/home/home_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 

@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crud/data/remote/repositories/firebase_auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 import '../../../core/constant.dart';
+import '../../../data/remote/repositories/firebase_auth_repo.dart';
 
 class LoginRegister extends StatefulWidget {
   const LoginRegister({super.key});
@@ -20,33 +20,33 @@ class _LoginRegisterState extends State<LoginRegister> {
   final TextEditingController _passwordResetController = TextEditingController();
   bool _obscureText = true;
 
-  signIn() async {
+  signIn(BuildContext context) async {
     try {
       await AuthFirebase().singInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
     } on FirebaseAuthException catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.message ?? ""),
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message ?? "")),
+        );
+      }
     }
   }
 
-  register() async {
+  register(BuildContext context) async {
     try {
       await AuthFirebase().createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
     } on FirebaseAuthException catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.message ?? ""),
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message ?? "")),
+        );
+      }
     }
   }
 
@@ -172,13 +172,17 @@ class _LoginRegisterState extends State<LoginRegister> {
                                   await AuthFirebase()
                                       .resetPassword(email: _passwordResetController.text);
 
-                                  Navigator.pop(context);
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                  }
                                 } on FirebaseAuthException catch (error) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(error.message ?? ""),
-                                    ),
-                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(error.message ?? ""),
+                                      ),
+                                    );
+                                  }
                                 }
                               }
                             },
@@ -196,7 +200,7 @@ class _LoginRegisterState extends State<LoginRegister> {
               ),
             ),
             ElevatedButton(
-              onPressed: isLogin ? signIn : register,
+              onPressed: () => isLogin ? signIn(context) : register(context),
               child: Text(isLogin ? "Login" : "Register"),
             ),
             TextButton(
@@ -206,7 +210,8 @@ class _LoginRegisterState extends State<LoginRegister> {
                 });
               },
               child: Text(
-                  isLogin ? "Don't have an account, register?" : "Already have an account, login?"),
+                isLogin ? "Don't have an account, register?" : "Already have an account, login?",
+              ),
             ),
           ],
         ),

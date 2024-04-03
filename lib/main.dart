@@ -1,14 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crud/config/routes/routes.dart';
-import 'package:firebase_crud/config/themes/theme.dart';
-import 'package:firebase_crud/data/remote/repositories/firebase_auth_repo.dart';
-import 'package:firebase_crud/presentation/screens/auth/login_register.dart';
-import 'package:firebase_crud/presentation/screens/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_ddd/firebase_options.dart';
+import 'config/routes/routes.dart';
+import 'config/themes/theme.dart';
+import 'data/remote/repositories/firebase_auth_repo.dart';
+import 'presentation/screens/auth/login_register.dart';
+import 'presentation/screens/home.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MyApp());
 }
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Firebase Crud Operation',
+      title: 'Firebase With DDD',
       theme: lightTheme,
       home: StreamBuilder(
         stream: AuthFirebase().authStateChanges,
