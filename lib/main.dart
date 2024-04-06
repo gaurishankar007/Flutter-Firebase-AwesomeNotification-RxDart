@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_ddd/firebase_options.dart';
+
+import 'features/app/views/home.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,10 +16,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Firebase With DDD',
-      home: Scaffold(appBar: AppBar(title: const Text("Firebase DDD"))),
+      title: 'Firebase With RxDart',
+      home: Home(),
     );
   }
 }

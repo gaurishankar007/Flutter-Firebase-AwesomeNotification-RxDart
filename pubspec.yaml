@@ -1,5 +1,5 @@
-name: flutter_firebase_ddd
-description: A flutter firebase project with Domain Driven Design principles.
+name: firebase_crud
+description: A firebase project with Rx Dart.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -38,6 +38,11 @@ dependencies:
   firebase_auth: ^4.19.0
   firebase_core: ^2.28.0
   cloud_firestore: ^4.16.0
+  firebase_messaging: ^14.8.0
+  awesome_notifications_fcm: ^0.9.3+1
+  uuid: ^4.3.3
+  rxdart: ^0.27.7
+  flutter_hooks: ^0.20.5
 
 dev_dependencies:
   flutter_test:
