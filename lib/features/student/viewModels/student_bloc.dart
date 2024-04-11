@@ -144,7 +144,9 @@ class StudentBloc {
     final updateStudentSubscription = updateStudent.asyncMap((form) {
       Student student = form.student;
       if (form.imagePath.isNotEmpty) {
-        Reference reference = storage.ref("profile_pictures/${student.id}");
+        String fileName = "profile.jpg";
+        String firebaseStoragePath = "profile_pictures";
+        Reference reference = storage.ref(firebaseStoragePath).child(fileName);
 
         reference
             .putFile(File(form.imagePath))

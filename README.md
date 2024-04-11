@@ -67,7 +67,7 @@ A Flutter project for managing firebase database.
     - Gives a document reference with the provided path
 
 
-## Firestore QueryDocumentSnapshot (implements DocumentSnapshot) Operations
+## Firestore QueryDocumentSnapshot Operations
 
 - id
     - Gives document id for the snapshot
