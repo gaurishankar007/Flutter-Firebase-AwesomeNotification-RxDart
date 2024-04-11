@@ -7,67 +7,68 @@ import '../../auth/viewModels/auth_bloc.dart';
 import '../../auth/viewModels/auth_command.dart';
 import '../../auth/viewModels/auth_error.dart';
 import '../../auth/viewModels/auth_status.dart';
-import '../../contact/models/contact.dart';
-import '../../contact/viewModels/contact_bloc.dart';
-import '../../currentView/viewModel/current_view.dart';
-import '../../currentView/viewModel/view_bloc.dart';
+import '../../student/form/update_student_form.dart';
+import '../../student/models/address.dart';
+import '../../student/models/student.dart';
+import '../../student/viewModels/student_bloc.dart';
+import '../../view/models/view_data.dart';
+import '../../view/viewModel/view_bloc.dart';
 
 @immutable
 class AppBloc {
   // Hiding these bloc from being interacted form the UI
   final AuthBloc _authBloc;
   final ViewBloc _viewBloc;
-  final ContactBloc _contactBloc;
+  final StudentBloc _studentBloc;
 
-  final Stream<CurrentView> currentView;
+  final Stream<ViewData> view;
   final Stream<bool> isLoading;
-  final Stream<AuthError?> authError;
+  final Stream<AuthError?> authError;g
   final StreamSubscription<String?> _userIdChanges;
 
   const AppBloc._({
     required AuthBloc authBloc,
     required ViewBloc viewsBloc,
-    required ContactBloc contactBloc,
-    required this.currentView,
+    required StudentBloc studentBloc,
+    required this.view,
     required this.isLoading,
     required this.authError,
     required StreamSubscription<String?> userIdChanges,
   })  : _authBloc = authBloc,
         _viewBloc = viewsBloc,
-        _contactBloc = contactBloc,
+        _studentBloc = studentBloc,
         _userIdChanges = userIdChanges;
 
   void dispose() {
     _authBloc.dispose();
     _viewBloc.dispose();
-    _contactBloc.dispose();
+    _studentBloc.dispose();
     _userIdChanges.cancel();
   }
 
   factory AppBloc() {
     final authBloc = AuthBloc();
     final viewsBloc = ViewBloc();
-    final contactBloc = ContactBloc();
+    final studentBloc = StudentBloc();
 
-    // Pass userId from auth bloc into the contacts bloc
+    // Pass userId from auth bloc into the students bloc
     final userIdChanges = authBloc.userId.listen((String? userId) {
-      contactBloc.userId.add(userId);
+      studentBloc.userId.add(userId);
     });
 
-    // Calculate the current view
-    final Stream<CurrentView> currentViewBasedOnAuthStatus =
-        authBloc.authStatus.map<CurrentView>((authStatus) {
+    // Calculate the view based on the auth status
+    final Stream<ViewData> viewBasedOnAuthStatus = authBloc.authStatus.map<ViewData>((authStatus) {
       if (authStatus is AuthStatusLoggedIn) {
-        return CurrentView.contactList;
+        return const ViewData.studentList();
       } else {
-        return CurrentView.login;
+        return const ViewData.login();
       }
     });
 
     // Current View
-    final Stream<CurrentView> currentView = Rx.merge([
-      currentViewBasedOnAuthStatus,
-      viewsBloc.currentView,
+    final Stream<ViewData> view = Rx.merge([
+      viewBasedOnAuthStatus,
+      viewsBloc.viewData,
     ]);
 
     // IsLoading
@@ -75,47 +76,18 @@ class AppBloc {
       authBloc.isLoading,
     ]);
 
+    // asBroadcastStream allows multiple subscription
+    // In the UI you might to show and destroys widgets multiple times according to stream events
     return AppBloc._(
       authBloc: authBloc,
       viewsBloc: viewsBloc,
-      contactBloc: contactBloc,
-      currentView: currentView,
-      // asBroadcastStream allows listen and cancel multiple times
-      // In the UI you might to show and destroys widgets multiple times according to stream events
+      studentBloc: studentBloc,
+      view: view,
       isLoading: isLoading.asBroadcastStream(),
       authError: authBloc.authError.asBroadcastStream(),
       userIdChanges: userIdChanges,
     );
   }
-
-  void deleteContact(Contact contact) {
-    _contactBloc.deleteContact.add(contact);
-  }
-
-  void createContact(
-    String firstName,
-    String lastName,
-    String phoneNumber,
-  ) {
-    _contactBloc.createContact.add(
-      Contact.withoutIdProfile(
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phoneNumber,
-      ),
-    );
-  }
-
-  void deleteAccount() {
-    _contactBloc.deleteAllContacts.add(null);
-    _authBloc.deleteAccount.add(null);
-  }
-
-  void logout() {
-    _authBloc.logout.add(null);
-  }
-
-  Stream<Iterable<Contact>> get contacts => _contactBloc.contacts;
 
   void register(
     String email,
@@ -141,11 +113,54 @@ class AppBloc {
     );
   }
 
-  void goToContactListView() => _viewBloc.goToView.add(CurrentView.contactList);
+  Stream<Iterable<Student>> get students => _studentBloc.students;
 
-  void goToCreateContactView() => _viewBloc.goToView.add(CurrentView.createContact);
+  void createStudent({
+    required String name,
+    required String phoneNumber,
+    required String country,
+    required String city,
+  }) {
+    _studentBloc.createStudent.add(
+      Student.withoutIdProfile(
+        name: name,
+        phoneNumber: phoneNumber,
+        address: Address(
+          country: country,
+          city: city,
+        ),
+      ),
+    );
+  }
 
-  void goToRegisterView() => _viewBloc.goToView.add(CurrentView.register);
+  void updateStudent(UpdateStudentForm updateStudentForm) {
+    _studentBloc.updateStudent.add(updateStudentForm);
+  }
 
-  void goToLoginView() => _viewBloc.goToView.add(CurrentView.login);
+  void deleteStudent(Student student) {
+    _studentBloc.deleteStudent.add(student);
+  }
+
+  void deleteAccount() {
+    _studentBloc.deleteAllStudents.add(null);
+    _authBloc.deleteAccount.add(null);
+  }
+
+  void logout() {
+    _authBloc.logout.add(null);
+  }
+
+  void goToLoginView() => _viewBloc.goToView.add(const ViewData.login());
+
+  void goToRegisterView() => _viewBloc.goToView.add(const ViewData.register());
+
+  void goToStudentListView() => _viewBloc.goToView.add(const ViewData.studentList());
+
+  void goToCreateStudentView() => _viewBloc.goToView.add(const ViewData.createStudent());
+
+  void goToUpdateStudentView(Student student) =>
+      _viewBloc.goToView.add(ViewData.updateStudent(student));
+
+  void goToStudentInformationView(Student student) =>
+      _viewBloc.goToView.add(ViewData.studentInformation(student));
 }

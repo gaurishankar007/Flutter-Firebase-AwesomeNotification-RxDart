@@ -1,15 +1,19 @@
 import 'dart:async';
 
-import '../../auth/views/login_view.dart';
-import '../../auth/views/register_view.dart';
-import '../../contact/views/contacts_list_view.dart';
-import '../../contact/views/new_contact_view.dart';
-import '../../currentView/viewModel/current_view.dart';
-import '../../../widgets/dialogs/auth_error_dialog.dart';
-import '../../../widgets/loading/loading_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../../widgets/dialogs/auth_error_dialog.dart';
+import '../../../widgets/loading/loading_screen.dart';
 import '../../auth/viewModels/auth_error.dart';
+import '../../auth/views/login_view.dart';
+import '../../auth/views/register_view.dart';
+import '../../student/models/student.dart';
+import '../../student/views/new_student_view.dart';
+import '../../student/views/student_information_view.dart';
+import '../../student/views/students_list_view.dart';
+import '../../student/views/update_student_view.dart';
+import '../../view/models/view_data.dart';
+import '../../view/viewModel/current_view.dart';
 import '../viewModel/app_bloc.dart';
 
 class Home extends StatefulWidget {
@@ -38,6 +42,13 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    handleAuthErrors(context);
+    setupLoadingScreen(context);
+    return getHomePage();
+  }
+
   void handleAuthErrors(BuildContext context) async {
     await _authErrorSubscription?.cancel();
     _authErrorSubscription = appBloc.authError.listen((authError) {
@@ -58,8 +69,8 @@ class _HomeState extends State<Home> {
   }
 
   Widget getHomePage() {
-    return StreamBuilder<CurrentView>(
-      stream: appBloc.currentView,
+    return StreamBuilder<ViewData>(
+      stream: appBloc.view,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           // Returning circular progress indicator for both case
@@ -69,7 +80,8 @@ class _HomeState extends State<Home> {
 
           case ConnectionState.active:
           case ConnectionState.done:
-            final currentView = snapshot.requireData;
+            final view = snapshot.requireData;
+            final currentView = view.currentView;
             switch (currentView) {
               case CurrentView.login:
                 return LoginView(
@@ -81,30 +93,36 @@ class _HomeState extends State<Home> {
                   register: appBloc.register,
                   goToLoginView: appBloc.goToLoginView,
                 );
-
-              case CurrentView.contactList:
-                return ContactsListView(
+              case CurrentView.studentList:
+                return StudentsListView(
                   logout: appBloc.logout,
                   deleteAccount: appBloc.deleteAccount,
-                  deleteContact: appBloc.deleteContact,
-                  createNewContact: appBloc.goToCreateContactView,
-                  contacts: appBloc.contacts,
+                  deleteStudent: appBloc.deleteStudent,
+                  updateStudent: appBloc.updateStudent,
+                  goCreateNewStudent: appBloc.goToCreateStudentView,
+                  goStudentInformation: appBloc.goToStudentInformationView,
+                  goUpdateStudent: appBloc.goToUpdateStudentView,
+                  students: appBloc.students,
                 );
-              case CurrentView.createContact:
-                return NewContactView(
-                  createContact: appBloc.createContact,
-                  goBack: appBloc.goToContactListView,
+              case CurrentView.createStudent:
+                return NewStudentView(
+                  createStudent: appBloc.createStudent,
+                  goBack: appBloc.goToStudentListView,
+                );
+              case CurrentView.updateStudent:
+                return UpdateStudentView(
+                  student: view.data as Student,
+                  updateStudent: appBloc.updateStudent,
+                  goBack: appBloc.goToStudentListView,
+                );
+              case CurrentView.studentInformation:
+                return StudentInformation(
+                  student: view.data as Student,
+                  goBack: appBloc.goToStudentListView,
                 );
             }
         }
       },
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    handleAuthErrors(context);
-    setupLoadingScreen(context);
-    return getHomePage();
   }
 }

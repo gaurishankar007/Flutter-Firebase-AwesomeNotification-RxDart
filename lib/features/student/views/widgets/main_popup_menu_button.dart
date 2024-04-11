@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/typedef/function_type_definitions.dart';
-import '../../../widgets/dialogs/delete_account_dialog.dart';
-import '../../../widgets/dialogs/logout_dialog.dart';
+import '../../../../core/typedef/function_type_definitions.dart';
+import '../../../../widgets/dialogs/delete_account_dialog.dart';
+import '../../../../widgets/dialogs/logout_dialog.dart';
 
 enum MenuAction { logout, deleteAccount }
 

@@ -24,7 +24,7 @@ class LoginView extends HookWidget {
         title: const Text('Log in'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Column(
           children: [
             TextField(

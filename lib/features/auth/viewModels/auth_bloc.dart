@@ -58,6 +58,8 @@ class AuthBloc {
     });
 
     // Get the user-id
+    // Starting with null
+    // Because when user kills the app, the auth status doesn't change
     final Stream<String?> userId = FirebaseAuth.instance
         .authStateChanges()
         .map((user) => user?.uid)

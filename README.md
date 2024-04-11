@@ -1,4 +1,4 @@
-# Flutter Firebase CRUD With RxDart
+# Flutter Firebase CRUD With RxDart 🚀🚀🚀
 
 A Flutter project for managing firebase database.
 
@@ -103,6 +103,7 @@ A Flutter project for managing firebase database.
 - update(`Map<Object, Object?>` data)
     - Updates data on the document
     - Data will be merged with any existing document data
+    - Does not create new document or field
 
 - get([GetOptions? options])
     - Future of documentSnapshot
@@ -114,7 +115,8 @@ A Flutter project for managing firebase database.
     - Sets data on the document, overwriting any existing data
     - If the document does not yet exist, it will be created
     - If SetOptions are provided, the data can be merged into an existing document instead of overwriting
-    
+    - It can create new document or field if not presented
+
 - withConverter<R>({
     required FromFirestore<R> fromFirestore,
     required ToFirestore<R> toFirestore,
