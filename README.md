@@ -29,7 +29,7 @@ A Flutter project for managing firebase database.
     - Contains zero or more QueryDocumentSnapshot objects representing the results of a query
 
 
-## Firestore Collection Operations
+## Firestore CollectionReference Operations
 
 - snapshots()
     - Stream of querySnapshot
@@ -67,7 +67,7 @@ A Flutter project for managing firebase database.
     - Gives a document reference with the provided path
 
 
-## Firestore QueryDocumentSnapshot Operations
+## Firestore QueryDocumentSnapshot (implements DocumentSnapshot) Operations
 
 - id
     - Gives document id for the snapshot
@@ -96,6 +96,7 @@ A Flutter project for managing firebase database.
 - collection(string collectionPath)
     - Gets a CollectionReference instance that 
     - Refers to the collection at the specified path, relative from this DocumentReference
+    - Example, Chat Collection has a nested Message Collection, get Message Collection from a chat document
 
 - delete()
     - Deletes the current document from the collection

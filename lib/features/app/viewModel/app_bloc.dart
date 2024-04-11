@@ -7,8 +7,11 @@ import '../../auth/viewModels/auth_bloc.dart';
 import '../../auth/viewModels/auth_command.dart';
 import '../../auth/viewModels/auth_error.dart';
 import '../../auth/viewModels/auth_status.dart';
+import '../../student/form/create_module_form.dart';
+import '../../student/form/delete_module_form.dart';
 import '../../student/form/update_student_form.dart';
 import '../../student/models/address.dart';
+import '../../student/models/module.dart';
 import '../../student/models/student.dart';
 import '../../student/viewModels/student_bloc.dart';
 import '../../view/models/view_data.dart';
@@ -23,7 +26,7 @@ class AppBloc {
 
   final Stream<ViewData> view;
   final Stream<bool> isLoading;
-  final Stream<AuthError?> authError;g
+  final Stream<AuthError?> authError;
   final StreamSubscription<String?> _userIdChanges;
 
   const AppBloc._({
@@ -115,6 +118,8 @@ class AppBloc {
 
   Stream<Iterable<Student>> get students => _studentBloc.students;
 
+  Stream<Iterable<Module>> modules(String studentId) => _studentBloc.modules(studentId);
+
   void createStudent({
     required String name,
     required String phoneNumber,
@@ -144,6 +149,14 @@ class AppBloc {
   void deleteAccount() {
     _studentBloc.deleteAllStudents.add(null);
     _authBloc.deleteAccount.add(null);
+  }
+
+  void createModule(CreateModuleForm createModuleForm) {
+    _studentBloc.createModule.add(createModuleForm);
+  }
+
+  void deleteModule(DeleteModuleForm deleteModuleForm) {
+    _studentBloc.deleteModule.add(deleteModuleForm);
   }
 
   void logout() {

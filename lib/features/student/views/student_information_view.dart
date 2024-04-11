@@ -1,15 +1,23 @@
+import 'widgets/module_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/typedef/function_type_definitions.dart';
+import '../../../widgets/bottom_sheets/create_module_bottom_sheet.dart';
 import '../models/student.dart';
 
 class StudentInformation extends StatelessWidget {
   final Student student;
+  final ModuleStreamCallback moduleStream;
+  final CreateModuleCallBack createModule;
+  final DeleteModuleCallBack deleteModule;
   final GoBackCallback goBack;
 
   const StudentInformation({
     super.key,
     required this.student,
+    required this.moduleStream,
+    required this.createModule,
+    required this.deleteModule,
     required this.goBack,
   });
 
@@ -24,7 +32,7 @@ class StudentInformation extends StatelessWidget {
         title: const Text('Student Information'),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
             children: [
@@ -76,6 +84,33 @@ class StudentInformation extends StatelessWidget {
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                 ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Modules",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      showCreateModuleBottomSheet(
+                        context: context,
+                        studentId: student.id,
+                        createModule: createModule,
+                      );
+                    },
+                    icon: const Icon(Icons.add_circle_rounded, color: Colors.deepPurple),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: ModuleList(
+                  student: student,
+                  moduleStream: moduleStream,
+                  deleteModule: deleteModule,
+                ),
               ),
             ],
           ),

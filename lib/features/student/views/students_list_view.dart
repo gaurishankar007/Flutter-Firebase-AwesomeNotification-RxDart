@@ -55,8 +55,9 @@ class StudentsListView extends StatelessWidget {
             case ConnectionState.active:
             case ConnectionState.done:
               final students = snapshot.requireData;
-              return ListView.builder(
+              return ListView.separated(
                 itemCount: students.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   final student = students.elementAt(index);
                   return StudentListTile(

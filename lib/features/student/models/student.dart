@@ -55,7 +55,7 @@ class Student {
         profilePicture = json[_Keys.profilePicture] as String,
         address = Address.fromJson(json[_Keys.address] as Map<String, dynamic>);
 
-  Map<String, dynamic> json() => {
+  Map<String, dynamic> toJson() => {
         _Keys.userIdKey: userId,
         _Keys.firstNameKey: name,
         _Keys.phoneNumberKey: phoneNumber,

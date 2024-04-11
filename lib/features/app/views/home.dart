@@ -118,6 +118,9 @@ class _HomeState extends State<Home> {
               case CurrentView.studentInformation:
                 return StudentInformation(
                   student: view.data as Student,
+                  moduleStream: appBloc.modules,
+                  createModule: appBloc.createModule,
+                  deleteModule: appBloc.deleteModule,
                   goBack: appBloc.goToStudentListView,
                 );
             }
