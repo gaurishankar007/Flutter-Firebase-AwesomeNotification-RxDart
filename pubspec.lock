@@ -18,7 +18,7 @@ packages:
     source: hosted
     version: "2.11.0"
   awesome_notifications:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: awesome_notifications
       sha256: d9e46ce7f5171ee1e9b1c5bc6dc40bd77528561f592842ce97ce3a0a9ae155ef
@@ -217,30 +217,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.6.28"
-  firebase_messaging:
-    dependency: "direct main"
-    description:
-      name: firebase_messaging
-      sha256: "502233442839406198c34458a4ff71ca3350cc7be88ce06a8b729cbd2162ef57"
-      url: "https://pub.dev"
-    source: hosted
-    version: "14.8.0"
-  firebase_messaging_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_messaging_platform_interface
-      sha256: "9438353a857c8000b0680d7ee246acb14fb854c4a14df4ebc7e1efde166903ac"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.5.30"
-  firebase_messaging_web:
-    dependency: transitive
-    description:
-      name: firebase_messaging_web
-      sha256: "6672c1c41e79d607b1ce0bbf1c6dcf97f7894b98bf65fe806e40d62a700bae3a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.8.0"
   firebase_storage:
     dependency: "direct main"
     description:

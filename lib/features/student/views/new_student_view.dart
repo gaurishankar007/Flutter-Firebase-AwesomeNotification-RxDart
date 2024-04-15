@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../core/helpers/if_debugging.dart';
 import '../../../core/typedef/function_type_definitions.dart';
+import '../../../widgets/message/message_screen.dart';
 
 class NewStudentView extends HookWidget {
   final CreateStudentCallback createStudent;
@@ -88,7 +89,16 @@ class NewStudentView extends HookWidget {
                   country: country,
                   city: city,
                 );
+
                 goBack();
+
+                MessageScreen.show(
+                  context,
+                  title: 'New Student Created',
+                  subTitle: 'You have successfully created a new student.',
+                  icon: const Icon(Icons.check, color: Colors.white),
+                  iconContainerColor: Colors.green,
+                );
               },
               child: const Text('Save Student'),
             )
