@@ -11,6 +11,7 @@ class StudentsListView extends StatelessWidget {
   final UpdateStudentCallback updateStudent;
   final StudentCallback deleteStudent;
   final VoidCallback goCreateNewStudent;
+  final VoidCallback goTestNotification;
   final StudentCallback goStudentInformation;
   final StudentCallback goUpdateStudent;
   final Stream<Iterable<Student>> students;
@@ -22,6 +23,7 @@ class StudentsListView extends StatelessWidget {
     required this.updateStudent,
     required this.deleteStudent,
     required this.goCreateNewStudent,
+    required this.goTestNotification,
     required this.goStudentInformation,
     required this.goUpdateStudent,
     required this.students,
@@ -33,6 +35,10 @@ class StudentsListView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Students List'),
         actions: [
+          IconButton(
+            onPressed: goTestNotification,
+            icon: const Icon(Icons.notifications),
+          ),
           MainPopupMenuButton(
             logout: logout,
             deleteAccount: deleteAccount,

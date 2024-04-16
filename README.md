@@ -1,4 +1,4 @@
-# Flutter Firebase, Awesome Notifications, RxDart 🚀🚀🚀
+# Flutter Firebase, Awesome Notifications, RxDart 🚀
 
 A Flutter project demonstrating about
 - Authentication with firebase

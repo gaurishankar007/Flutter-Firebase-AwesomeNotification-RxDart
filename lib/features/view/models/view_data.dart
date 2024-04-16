@@ -15,8 +15,9 @@ class ViewData<T> {
   const ViewData.login() : this(currentView: CurrentView.login);
   const ViewData.register() : this(currentView: CurrentView.register);
   const ViewData.studentList() : this(currentView: CurrentView.studentList);
-  const ViewData.createStudent()
-      : currentView = CurrentView.createStudent,
+  const ViewData.createStudent() : this(currentView: CurrentView.createStudent);
+  const ViewData.testNotification()
+      : currentView = CurrentView.testNotification,
         data = null;
 }
 

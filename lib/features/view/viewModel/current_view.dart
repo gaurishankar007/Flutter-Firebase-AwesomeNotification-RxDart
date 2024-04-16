@@ -5,4 +5,5 @@ enum CurrentView {
   createStudent,
   updateStudent,
   studentInformation,
+  testNotification,
 }

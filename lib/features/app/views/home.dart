@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_crud/features/notification/views/test_notification.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/dialogs/auth_error_dialog.dart';
@@ -100,6 +101,7 @@ class _HomeState extends State<Home> {
                   deleteStudent: appBloc.deleteStudent,
                   updateStudent: appBloc.updateStudent,
                   goCreateNewStudent: appBloc.goToCreateStudentView,
+                  goTestNotification: appBloc.goToTestNotificationView,
                   goStudentInformation: appBloc.goToStudentInformationView,
                   goUpdateStudent: appBloc.goToUpdateStudentView,
                   students: appBloc.students,
@@ -121,6 +123,10 @@ class _HomeState extends State<Home> {
                   moduleStream: appBloc.modules,
                   createModule: appBloc.createModule,
                   deleteModule: appBloc.deleteModule,
+                  goBack: appBloc.goToStudentListView,
+                );
+              case CurrentView.testNotification:
+                return TestNotification(
                   goBack: appBloc.goToStudentListView,
                 );
             }
