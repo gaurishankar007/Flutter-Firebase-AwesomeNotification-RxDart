@@ -172,8 +172,8 @@ class AppBloc {
   void goToCreateStudentView() => _viewBloc.goToView.add(const ViewData.createStudent());
 
   void goToUpdateStudentView(Student student) =>
-      _viewBloc.goToView.add(ViewData.updateStudent(student));
+      _viewBloc.goToView.add(StudentViewData.updateStudent(student));
 
   void goToStudentInformationView(Student student) =>
-      _viewBloc.goToView.add(ViewData.studentInformation(student));
+      _viewBloc.goToView.add(StudentViewData.studentInformation(student));
 }

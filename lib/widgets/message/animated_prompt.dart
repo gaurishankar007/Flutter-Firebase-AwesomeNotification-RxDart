@@ -94,7 +94,7 @@ class _AnimatedPromptWidgetState extends State<AnimatedPromptWidget>
             minWidth: 100,
             minHeight: 100,
             maxWidth: MediaQuery.of(context).size.width * .5,
-            maxHeight: MediaQuery.of(context).size.height * .25,
+            maxHeight: MediaQuery.of(context).size.height * .20,
           ),
           child: Stack(
             children: [
@@ -102,14 +102,12 @@ class _AnimatedPromptWidgetState extends State<AnimatedPromptWidget>
                 padding: const EdgeInsets.all(15),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 80),
                     Text(
                       widget.title,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
