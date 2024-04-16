@@ -17,8 +17,8 @@ class NewStudentView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nameController = useTextEditingController(text: 'Vandad'.ifDebugging);
-    final phoneNumberController = useTextEditingController(text: '+461234567890'.ifDebugging);
+    final nameController = useTextEditingController(text: 'Laty'.ifDebugging);
+    final phoneNumberController = useTextEditingController(text: '+9876301425'.ifDebugging);
     final countryController = useTextEditingController(text: 'Sweden'.ifDebugging);
     final cityController = useTextEditingController(text: 'Stockholm'.ifDebugging);
 
@@ -90,15 +90,15 @@ class NewStudentView extends HookWidget {
                   city: city,
                 );
 
-                goBack();
-
                 showMessageOverlay(
                   context,
-                  title: 'New Student Created',
-                  subTitle: 'You have successfully created a new student.',
+                  title: 'New Student Added',
+                  subTitle: '$name has been added successfully.',
                   icon: const Icon(Icons.check, color: Colors.white),
                   iconContainerColor: Colors.green,
                 );
+
+                Future.delayed(const Duration(seconds: 1)).then((_) => goBack());
               },
               child: const Text('Save Student'),
             )

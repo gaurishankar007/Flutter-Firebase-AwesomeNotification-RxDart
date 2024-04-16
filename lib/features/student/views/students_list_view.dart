@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/typedef/function_type_definitions.dart';
+import '../../../main.dart';
+import '../../../widgets/dialogs/notification_dialog.dart';
 import '../models/student.dart';
 import 'widgets/main_popup_menu_button.dart';
 import 'widgets/student_list_tile.dart';
 
-class StudentsListView extends StatelessWidget {
+class StudentsListView extends StatefulWidget {
   final LogoutCallback logout;
   final DeleteAccountCallback deleteAccount;
   final UpdateStudentCallback updateStudent;
@@ -30,27 +32,41 @@ class StudentsListView extends StatelessWidget {
   });
 
   @override
+  State<StudentsListView> createState() => _StudentsListViewState();
+}
+
+class _StudentsListViewState extends State<StudentsListView> {
+  @override
+  void initState() {
+    super.initState();
+
+    localNotificationService.isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) showNotificationDialog(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Students List'),
         actions: [
           IconButton(
-            onPressed: goTestNotification,
+            onPressed: widget.goTestNotification,
             icon: const Icon(Icons.notifications),
           ),
           MainPopupMenuButton(
-            logout: logout,
-            deleteAccount: deleteAccount,
+            logout: widget.logout,
+            deleteAccount: widget.deleteAccount,
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: goCreateNewStudent,
+        onPressed: widget.goCreateNewStudent,
         child: const Icon(Icons.add),
       ),
       body: StreamBuilder<Iterable<Student>>(
-        stream: students,
+        stream: widget.students,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             // Returning circular progress indicator for both case
@@ -68,9 +84,9 @@ class StudentsListView extends StatelessWidget {
                   final student = students.elementAt(index);
                   return StudentListTile(
                     student: student,
-                    goStudentInformation: () => goStudentInformation(student),
-                    goToUpdateStudent: () => goUpdateStudent(student),
-                    deleteStudent: () => deleteStudent(student),
+                    goStudentInformation: () => widget.goStudentInformation(student),
+                    goToUpdateStudent: () => widget.goUpdateStudent(student),
+                    deleteStudent: () => widget.deleteStudent(student),
                   );
                 },
               );
