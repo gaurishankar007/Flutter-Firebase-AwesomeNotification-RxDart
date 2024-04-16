@@ -92,7 +92,7 @@ class NewStudentView extends HookWidget {
 
                 goBack();
 
-                MessageScreen.show(
+                showMessageOverlay(
                   context,
                   title: 'New Student Created',
                   subTitle: 'You have successfully created a new student.',
