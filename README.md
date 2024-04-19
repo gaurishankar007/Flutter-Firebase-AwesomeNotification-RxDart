@@ -115,7 +115,7 @@ A Flutter project demonstrating about
   - onActionReceivedMethod
   - onDismissActionReceivedMethod
 
-### (Firebase)
+### Firebase
 
 - `Initialize firebase notifications`
   - onFcmTokenHandle
