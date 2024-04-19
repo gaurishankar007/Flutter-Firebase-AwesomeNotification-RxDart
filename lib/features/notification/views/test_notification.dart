@@ -1,31 +1,19 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:firebase_crud/main.dart';
+import '../../../core/utils/local_notification_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/notification_time_picker.dart';
 
-class TestNotification extends StatefulWidget {
+class TestNotification extends StatelessWidget {
   final VoidCallback goBack;
   const TestNotification({super.key, required this.goBack});
-
-  @override
-  State<TestNotification> createState() => _TestNotificationState();
-}
-
-class _TestNotificationState extends State<TestNotification> {
-  @override
-  void initState() {
-    super.initState();
-
-    localNotificationService.setListener();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: widget.goBack,
+          onPressed: goBack,
           icon: const Icon(Icons.close),
         ),
         title: const Text('Test Notification'),
@@ -36,7 +24,7 @@ class _TestNotificationState extends State<TestNotification> {
             const SizedBox(width: double.maxFinite),
             ElevatedButton(
               onPressed: () {
-                localNotificationService.showBasicNotification(
+                LocalNotificationService.showBasicNotification(
                   channelKey: 'basic_channel',
                   title: 'Hello',
                   body: 'This is a basic notification ${Emojis.smile_face_with_tongue}',
@@ -51,7 +39,7 @@ class _TestNotificationState extends State<TestNotification> {
                 final schedule = await pickSchedule(context);
 
                 if (schedule != null) {
-                  localNotificationService.showReminderNotification(
+                  LocalNotificationService.showReminderNotification(
                     channelKey: 'scheduled_channel',
                     title: 'Hello',
                     body: 'This is a scheduled notification ${Emojis.sun_full_moon_face}',
@@ -63,13 +51,13 @@ class _TestNotificationState extends State<TestNotification> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async => localNotificationService.cancelReminderNotifications(),
+              onPressed: () async => LocalNotificationService.cancelReminderNotifications(),
               child: const Text('Cancel Scheduled Notification'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                final notifications = await localNotificationService.getScheduledNotifications();
+                final notifications = await LocalNotificationService.getScheduledNotifications();
                 debugPrint(notifications.toString());
               },
               child: const Text('Print Scheduled Notification'),

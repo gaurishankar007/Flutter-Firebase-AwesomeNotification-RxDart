@@ -1,4 +1,4 @@
-import 'package:firebase_crud/widgets/message/animated_prompt.dart';
+import 'animated_prompt.dart';
 import 'package:flutter/material.dart';
 
 showMessageOverlay(

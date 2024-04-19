@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:firebase_crud/features/notification/views/test_notification.dart';
+import '../../notification/views/test_notification.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/dialogs/auth_error_dialog.dart';

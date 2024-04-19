@@ -1,15 +1,22 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:firebase_crud/core/utils/notification_time_picker.dart';
-import 'package:firebase_crud/core/utils/unique_id.dart';
-import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/material.dart' show Colors, MaterialPageRoute;
+
+import '../../features/notification/views/test_notification.dart';
+import '../../main.dart';
+import 'notification_time_picker.dart';
+import 'unique_id.dart';
 
 class LocalNotificationService {
-  static final AwesomeNotifications _awesomeNotifications = AwesomeNotifications();
+  ///  **************************
+  /// INITIALIZE NOTIFICATIONS
+  /// **************************
 
-  Future<void> initializeLocalNotifications({
+  static Future<void> initializeLocalNotifications({
     required String channelKey,
     required String channelName,
     required String channelDescription,
@@ -17,7 +24,7 @@ class LocalNotificationService {
     bool locked = false,
     String? soundSource,
   }) async {
-    await _awesomeNotifications.initialize(
+    await AwesomeNotifications().initialize(
       // set the icon to null if you want to use the default app icon
       // otherwise, you can set a custom icon
       // 'resource://drawable/res_notification_icon',
@@ -46,11 +53,67 @@ class LocalNotificationService {
     );
   }
 
-  Future<bool> isNotificationAllowed() => _awesomeNotifications.isNotificationAllowed();
-  Future<bool> requestNotification() =>
-      _awesomeNotifications.requestPermissionToSendNotifications();
+  // Get the initial notification action when the app is launched by a notification
+  // This method will be called whenever the app is opened
+  static Future<void> getInitialNotificationAction() async {
+    ReceivedAction? receivedAction = await AwesomeNotifications().getInitialNotificationAction(
+      removeFromActionEvents: true,
+    );
 
-  Future<void> showBasicNotification({
+    // As this method is called when the app is opened,
+    // The notification action will be null if the app is not launched by a notification
+    // Therefore, we need to check if the notification action is not null
+    if (receivedAction != null) {
+      log('App launched by a notification action: $receivedAction');
+
+      // Data send from firebase message
+      final extraDataReceived = receivedAction.payload;
+      log(extraDataReceived.toString());
+
+      // Adding a delay to navigate to the test notification screen
+      // Because this method is called in the main method
+      // And the navigator is not ready (navigatorKey.currentState is null)
+      // That means the material app is not initialized yet
+      Future.delayed(const Duration(milliseconds: 500)).then((_) {
+        navigatorKey.currentState?.push(
+          MaterialPageRoute(
+            builder: (_) => TestNotification(
+              goBack: () {},
+            ),
+          ),
+        );
+      });
+    }
+  }
+
+  static Future<void> initializeIsolateReceivePort() async {
+    final receivePort = ReceivePort('Notification action port in main isolate')
+      ..listen((silentData) => onActionReceivedImplementationMethod(silentData));
+
+    IsolateNameServer.registerPortWithName(receivePort.sendPort, 'notification_action_port');
+  }
+
+  static Future<void> onActionReceivedImplementationMethod(ReceivedAction receivedAction) async {
+    // Navigate to the test notification screen
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (_) => TestNotification(
+          goBack: () {},
+        ),
+      ),
+    );
+  }
+
+  static Future<bool> isNotificationAllowed() => AwesomeNotifications().isNotificationAllowed();
+
+  static Future<bool> requestNotification() =>
+      AwesomeNotifications().requestPermissionToSendNotifications();
+
+  ///  *********************
+  ///  CREATE NOTIFICATIONS
+  ///  *********************
+
+  static Future<void> showBasicNotification({
     required String channelKey,
     required String title,
     required String body,
@@ -67,23 +130,24 @@ class LocalNotificationService {
       notificationLayout: NotificationLayout.BigPicture,
     );
 
-    await _awesomeNotifications.createNotification(content: notificationContent);
+    await AwesomeNotifications().createNotification(content: notificationContent);
   }
 
-  Future<void> showReminderNotification({
+  static Future<void> showReminderNotification({
     required String channelKey,
     required String title,
     required String body,
     required NotificationWeekAndTime notificationWeekAndTime,
   }) async {
     final notificationContent = NotificationContent(
-        id: uniqueId(),
-        channelKey: channelKey,
-        title: title,
-        body: body,
-        notificationLayout: NotificationLayout.Default,
-        category: NotificationCategory.Reminder,
-        wakeUpScreen: true);
+      id: uniqueId(),
+      channelKey: channelKey,
+      title: title,
+      body: body,
+      notificationLayout: NotificationLayout.Default,
+      category: NotificationCategory.Reminder,
+      wakeUpScreen: true,
+    );
 
     final actionButtons = [
       NotificationActionButton(
@@ -103,23 +167,26 @@ class LocalNotificationService {
       allowWhileIdle: true,
     );
 
-    await _awesomeNotifications.createNotification(
+    await AwesomeNotifications().createNotification(
       content: notificationContent,
       actionButtons: actionButtons,
       schedule: schedule,
     );
   }
 
-  Future<void> cancelReminderNotifications() async {
-    await _awesomeNotifications.cancelAllSchedules();
+  static Future<void> cancelReminderNotifications() async {
+    await AwesomeNotifications().cancelAllSchedules();
   }
 
-  Future<List<NotificationModel>> getScheduledNotifications() async {
-    return await _awesomeNotifications.listScheduledNotifications();
+  static Future<List<NotificationModel>> getScheduledNotifications() async {
+    return await AwesomeNotifications().listScheduledNotifications();
   }
 
-  setListener() async {
-    await _awesomeNotifications.setListeners(
+  ///  **********************************************************
+  ///  LISTEN NOTIFICATION ACTIONS (WHEN NOTIFICATION IS TAPPED)
+  ///  **********************************************************
+  static setListener() async {
+    await AwesomeNotifications().setListeners(
       onNotificationCreatedMethod: LocalNotificationService.onNotificationCreatedMethod,
       onNotificationDisplayedMethod: LocalNotificationService.onNotificationDisplayedMethod,
       onActionReceivedMethod: LocalNotificationService.onActionReceivedMethod,
@@ -140,16 +207,24 @@ class LocalNotificationService {
     log('Notification displayed: $id, channelKey: $channelKey');
   }
 
+  // Handles the notification action when the app is in the foreground or background or closed
+  // This function will be called when the app is launched by a notification
+  // if the initial page is listening to the notification actions
+  // Works for both local and remote notifications
   static Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
     int? id = receivedAction.id;
     String? channelKey = receivedAction.channelKey;
+    // Data send from firebase message
+    final extraDataReceived = receivedAction.payload;
+
+    log(extraDataReceived.toString());
     log('Action received: $id, channelKey: $channelKey');
 
     // Removing the badge count on iOS app icon
     if (Platform.isIOS) {
-      final badgeCount = await _awesomeNotifications.getGlobalBadgeCounter();
+      final badgeCount = await AwesomeNotifications().getGlobalBadgeCounter();
       if (badgeCount > 0) {
-        await _awesomeNotifications.setGlobalBadgeCounter(badgeCount - 1);
+        await AwesomeNotifications().setGlobalBadgeCounter(badgeCount - 1);
       }
     }
   }

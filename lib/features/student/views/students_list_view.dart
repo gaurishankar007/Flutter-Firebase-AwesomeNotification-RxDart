@@ -1,7 +1,7 @@
+import '../../../core/utils/local_notification_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/typedef/function_type_definitions.dart';
-import '../../../main.dart';
 import '../../../widgets/dialogs/notification_dialog.dart';
 import '../models/student.dart';
 import 'widgets/main_popup_menu_button.dart';
@@ -39,10 +39,17 @@ class _StudentsListViewState extends State<StudentsListView> {
   @override
   void initState() {
     super.initState();
+    requestNotification(context);
+  }
 
-    localNotificationService.isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) showNotificationDialog(context);
-    });
+  requestNotification(BuildContext context) async {
+    final isAllowed = await LocalNotificationService.isNotificationAllowed();
+    if (isAllowed && context.mounted) LocalNotificationService.setListener();
+
+    if (!isAllowed && context.mounted) {
+      final permission = await showNotificationDialog(context);
+      if (permission) LocalNotificationService.setListener();
+    }
   }
 
   @override

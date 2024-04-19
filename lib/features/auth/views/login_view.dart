@@ -1,7 +1,7 @@
-import '../../../core/helpers/if_debugging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../../core/helpers/if_debugging.dart';
 import '../../../core/typedef/function_type_definitions.dart';
 
 class LoginView extends HookWidget {
