@@ -6,7 +6,8 @@ A Flutter project demonstrating about
 - Database management with firebase
 - Storage management with firebase
 - Managing app state with rx-dart
-- Showing notifications with locally and remotely
+- Showing firebase push notifications
+- Showing local notifications
 
 ## Firestore Database
 
