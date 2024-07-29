@@ -1,6 +1,6 @@
 # Flutter Firebase, Awesome Notifications, RxDart 🚀
 
-A Flutter project demonstrating about
+A flutter project demonstrating
 
 - Authentication with firebase
 - Database management with firebase
